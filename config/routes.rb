@@ -1,7 +1,10 @@
 Rails.application.routes.draw do
-  resources :follows
-  resources :clock_in_outs
-  resources :users
+  resources :users do
+    post :clock_out, to: 'clock_in_outs#clock_out'
+    post :clock_in, to: 'clock_in_outs#clock_in'
+
+    get :clocks, on: :member, to: 'clock_in_outs#index'
+  end
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Defines the root path route ("/")

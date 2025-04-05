@@ -1,59 +1,35 @@
 class ClockInOutsController < ApplicationController
   before_action :set_clock_in_out, only: %i[ show edit update destroy ]
+  before_action :set_user
 
   # GET /clock_in_outs or /clock_in_outs.json
   def index
-    @clock_in_outs = ClockInOut.all
-  end
-
-  # GET /clock_in_outs/1 or /clock_in_outs/1.json
-  def show
-  end
-
-  # GET /clock_in_outs/new
-  def new
-    @clock_in_out = ClockInOut.new
-  end
-
-  # GET /clock_in_outs/1/edit
-  def edit
-  end
-
-  # POST /clock_in_outs or /clock_in_outs.json
-  def create
-    @clock_in_out = ClockInOut.new(clock_in_out_params)
-
+    @clock_in_outs = ClockInOut.find_by_user_ordered_created_at(@user.id)
     respond_to do |format|
-      if @clock_in_out.save
-        format.html { redirect_to @clock_in_out, notice: "Clock in out was successfully created." }
-        format.json { render :show, status: :created, location: @clock_in_out }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @clock_in_out.errors, status: :unprocessable_entity }
-      end
+      format.json { render json: @clock_in_outs, status: 200 }
     end
   end
 
-  # PATCH/PUT /clock_in_outs/1 or /clock_in_outs/1.json
-  def update
+  def clock_in
+    @record = ClockInOut.clock_in(@user.id)
     respond_to do |format|
-      if @clock_in_out.update(clock_in_out_params)
-        format.html { redirect_to @clock_in_out, notice: "Clock in out was successfully updated." }
-        format.json { render :show, status: :ok, location: @clock_in_out }
+      if @record.errors.empty?
+        format.json { render json: @record, status: :ok }
       else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @clock_in_out.errors, status: :unprocessable_entity }
+        format.json { render json: @record.errors, status: :unprocessable_entity }
       end
     end
+    return
   end
 
-  # DELETE /clock_in_outs/1 or /clock_in_outs/1.json
-  def destroy
-    @clock_in_out.destroy
-
+  def clock_out
+    record = ClockInOut.clock_out(@user.id)
     respond_to do |format|
-      format.html { redirect_to clock_in_outs_path, status: :see_other, notice: "Clock in out was successfully destroyed." }
-      format.json { head :no_content }
+      if record.errors.empty?
+        format.json { render json: @record, status: :ok }
+      else
+        format.json { render json: record.errors, status: :unprocessable_entity }
+      end
     end
   end
 
@@ -63,8 +39,11 @@ class ClockInOutsController < ApplicationController
       @clock_in_out = ClockInOut.find(params[:id])
     end
 
-    # Only allow a list of trusted parameters through.
-    def clock_in_out_params
-      params.require(:clock_in_out).permit(:target_date, :clock_in, :clock_out, :duration, :user_id)
+    def set_user
+      if params[:user_id].present?
+        @user = User.find params[:user_id]
+      else
+          raise ArgumentError, "Undefined user or ID #{params[:user_id]}"
+      end
     end
 end
