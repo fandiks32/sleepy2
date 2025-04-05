@@ -3,20 +3,18 @@ class FollowsController < ApplicationController
 
   # GET /follows or /follows.json
   def index
-    @follows = Follow.all
+    @follows = Follow.where(followed_id: params[:user_id])
+    respond_to do |format|
+      format.json { render json: @follows }
+    end
   end
 
   # GET /follows/1 or /follows/1.json
   def show
-  end
-
-  # GET /follows/new
-  def new
-    @follow = Follow.new
-  end
-
-  # GET /follows/1/edit
-  def edit
+    @follow = Follow.where(id: params[:id], follower_id: params[:user_id])
+    respond_to do |format|
+      format.json { render json: @follow }
+    end
   end
 
   # POST /follows or /follows.json
@@ -25,23 +23,8 @@ class FollowsController < ApplicationController
 
     respond_to do |format|
       if @follow.save
-        format.html { redirect_to @follow, notice: "Follow was successfully created." }
-        format.json { render :show, status: :created, location: @follow }
+        format.json { render json: @follow, status: :created }
       else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @follow.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
-  # PATCH/PUT /follows/1 or /follows/1.json
-  def update
-    respond_to do |format|
-      if @follow.update(follow_params)
-        format.html { redirect_to @follow, notice: "Follow was successfully updated." }
-        format.json { render :show, status: :ok, location: @follow }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: @follow.errors, status: :unprocessable_entity }
       end
     end

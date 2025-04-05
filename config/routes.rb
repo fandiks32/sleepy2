@@ -4,6 +4,8 @@ Rails.application.routes.draw do
     post :clock_in, to: 'clock_in_outs#clock_in'
 
     get :clocks, to: 'clock_in_outs#index'
+
+    resources :follows
   end
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
