@@ -3,7 +3,7 @@ Rails.application.routes.draw do
     post :clock_out, to: 'clock_in_outs#clock_out'
     post :clock_in, to: 'clock_in_outs#clock_in'
 
-    get :clocks, on: :member, to: 'clock_in_outs#index'
+    get :clocks, to: 'clock_in_outs#index'
   end
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

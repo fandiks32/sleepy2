@@ -30,4 +30,18 @@ RSpec.describe "ClockInOuts", type: :request do
       assert_response :unprocessable_entity
     end
   end
+
+  describe "GET /index" do
+    before(:each) do
+      @user = User.create(name: "irfan")
+      ClockInOut.create(user_id: @user.id, clock_in: DateTime.now, clock_out: DateTime.now)
+    end
+
+    it "should return a list of clock outs" do
+      get "/users/#{@user.id}/clocks", params: { format: 'json' }
+      assert_response :success
+      expect(assigns(:clock_in_outs)).to_not be_empty
+    end
+
+  end
 end
