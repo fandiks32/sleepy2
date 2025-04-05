@@ -4,6 +4,7 @@ Rails.application.routes.draw do
     post :clock_in, to: 'clock_in_outs#clock_in'
 
     get :clocks, to: 'clock_in_outs#index'
+    get :following_user_clocks, to: 'clock_in_outs#following_user_clocks'
 
     resources :follows
   end

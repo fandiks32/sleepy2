@@ -1,7 +1,6 @@
 class ClockInOut < ApplicationRecord
   belongs_to :user
 
-
   validates :user, presence: true
   validates :clock_in, presence: true
   validate :should_be_clocked_once

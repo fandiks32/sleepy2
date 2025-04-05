@@ -42,6 +42,25 @@ RSpec.describe "ClockInOuts", type: :request do
       assert_response :success
       expect(assigns(:clock_in_outs)).to_not be_empty
     end
+  end
 
+  describe "GET /following_user_clocks" do
+    let(:follower) { User.create(name: "irfan") }
+    let(:followed) { User.create(name: "david") }
+
+    before(:each) do
+      Follow.create(follower_id: follower.id, followed_id: followed.id)
+      ClockInOut.create(user_id: followed.id,  clock_in: DateTime.now, clock_out: DateTime.now + 9.hours, duration: 9.hours)
+      ClockInOut.create(user_id: followed.id,  clock_in: DateTime.now, clock_out: DateTime.now + 1.hours, duration: 1.hours)
+      ClockInOut.create(user_id: followed.id,  clock_in: DateTime.now, clock_out: DateTime.now + 3.hours, duration: 3.hours)
+    end
+
+    it "should return a list of clock outs" do
+      get "/users/#{follower.id}/following_user_clocks", params: { format: 'json' }
+      assert_response :success
+      expect(assigns(:clock_in_outs)).to_not be_empty
+      expect(assigns(:clock_in_outs).first.duration).to eq(9.hours)
+      expect(assigns(:clock_in_outs).last.duration).to eq(1.hours)
+    end
   end
 end

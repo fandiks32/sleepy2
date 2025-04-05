@@ -10,6 +10,17 @@ class ClockInOutsController < ApplicationController
     end
   end
 
+  def following_user_clocks
+    @clock_in_outs = ClockInOut.
+      joins(:user => :followings).
+      where(user: { follows: { follower_id: @user.id } }).
+      order(duration: :desc)
+
+    respond_to do |format|
+      format.json { render json: @clock_in_outs, status: 200 }
+    end
+  end
+
   def clock_in
     @record = ClockInOut.clock_in(@user.id)
     respond_to do |format|
