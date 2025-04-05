@@ -13,7 +13,7 @@ class ClockInOutsController < ApplicationController
   def following_user_clocks
     @clock_in_outs = ClockInOut.
       joins(:user => :followings).
-      where(user: { follows: { follower_id: @user.id } }).
+      where(user: { follows: { follower_id: @user.id } }, target_date: (Date.today - 1.week)..Date.today).
       order(duration: :desc)
 
     respond_to do |format|

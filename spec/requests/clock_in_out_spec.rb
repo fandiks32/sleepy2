@@ -50,9 +50,9 @@ RSpec.describe "ClockInOuts", type: :request do
 
     before(:each) do
       Follow.create(follower_id: follower.id, followed_id: followed.id)
-      ClockInOut.create(user_id: followed.id,  clock_in: DateTime.now, clock_out: DateTime.now + 9.hours, duration: 9.hours)
-      ClockInOut.create(user_id: followed.id,  clock_in: DateTime.now, clock_out: DateTime.now + 1.hours, duration: 1.hours)
-      ClockInOut.create(user_id: followed.id,  clock_in: DateTime.now, clock_out: DateTime.now + 3.hours, duration: 3.hours)
+      ClockInOut.create(user_id: followed.id,  target_date: DateTime.now.to_date, clock_in: DateTime.now, clock_out: DateTime.now + 9.hours, duration: 9.hours)
+      ClockInOut.create(user_id: followed.id,  target_date: DateTime.now.to_date, clock_in: DateTime.now, clock_out: DateTime.now + 1.hours, duration: 1.hours)
+      ClockInOut.create(user_id: followed.id,  target_date: DateTime.now.to_date, clock_in: DateTime.now, clock_out: DateTime.now + 3.hours, duration: 3.hours)
     end
 
     it "should return a list of clock outs" do
