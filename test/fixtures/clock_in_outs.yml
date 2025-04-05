@@ -1,0 +1,15 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  target_date: 2025-04-05
+  clock_in: 2025-04-05 22:05:57
+  clock_out: 2025-04-05 22:05:57
+  duration: 1
+  user: one
+
+two:
+  target_date: 2025-04-05
+  clock_in: 2025-04-05 22:05:57
+  clock_out: 2025-04-05 22:05:57
+  duration: 1
+  user: two

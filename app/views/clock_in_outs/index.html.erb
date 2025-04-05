@@ -1,0 +1,14 @@
+<p style="color: green"><%= notice %></p>
+
+<h1>Clock in outs</h1>
+
+<div id="clock_in_outs">
+  <% @clock_in_outs.each do |clock_in_out| %>
+    <%= render clock_in_out %>
+    <p>
+      <%= link_to "Show this clock in out", clock_in_out %>
+    </p>
+  <% end %>
+</div>
+
+<%= link_to "New clock in out", new_clock_in_out_path %>

@@ -1,0 +1,10 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @clock_in_out %>
+
+<div>
+  <%= link_to "Edit this clock in out", edit_clock_in_out_path(@clock_in_out) %> |
+  <%= link_to "Back to clock in outs", clock_in_outs_path %>
+
+  <%= button_to "Destroy this clock in out", @clock_in_out, method: :delete %>
+</div>
