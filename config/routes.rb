@@ -5,7 +5,7 @@ Rails.application.routes.draw do
 
     get :clocks, to: 'clock_in_outs#index'
     get :following_user_clocks, to: 'clock_in_outs#following_user_clocks'
-
+    delete :unfollow, to: 'follows#unfollow'
     resources :follows
   end
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html

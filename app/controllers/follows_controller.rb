@@ -48,6 +48,29 @@ class FollowsController < ApplicationController
     end
   end
 
+  def unfollow
+    if params[:followed_id].blank?
+      raise ArgumentError, "undefined followed_id"
+    end
+
+    follow = Follow.where(follower_id: params[:user_id], followed_id: params[:followed_id]).first
+    if follow.present?
+      if follow.destroy
+        respond_to do |format|
+          format.json { head :no_content }
+        end
+      else
+        respond_to do |format|
+          format.json { render json: @follow.errors, status: :unprocessable_entity }
+        end
+      end
+    else
+      respond_to do |format|
+        format.json { render json: "Cannot perform action, already unfollowed", status: :unprocessable_entity }
+      end
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_follow
