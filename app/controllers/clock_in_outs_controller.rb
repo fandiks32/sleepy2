@@ -13,7 +13,7 @@ class ClockInOutsController < ApplicationController
 
   def following_user_clocks
     @clock_in_outs = ClockInOut.
-      joins(:user => :followings).
+      joins(:user => :followers).
       where(user: { follows: { follower_id: @user.id } }, clock_in: (Date.today - 1.week)..Date.today).
       order(duration: :desc).
       page(@page).
@@ -37,12 +37,12 @@ class ClockInOutsController < ApplicationController
   end
 
   def clock_out
-    record = ClockInOut.clock_out(@user.id)
+    @record = ClockInOut.clock_out(@user.id)
     respond_to do |format|
-      if record.errors.empty?
+      if @record.errors.empty?
         format.json { render json: @record, status: :ok }
       else
-        format.json { render json: record.errors, status: :unprocessable_entity }
+        format.json { render json: @record.errors, status: :unprocessable_entity }
       end
     end
   end
