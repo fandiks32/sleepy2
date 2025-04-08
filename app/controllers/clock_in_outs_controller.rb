@@ -14,7 +14,7 @@ class ClockInOutsController < ApplicationController
   def following_user_clocks
     @clock_in_outs = ClockInOut.
       joins(:user => :followings).
-      where(user: { follows: { follower_id: @user.id } }, target_date: (Date.today - 1.week)..Date.today).
+      where(user: { follows: { follower_id: @user.id } }, clock_in: (Date.today - 1.week)..Date.today).
       order(duration: :desc).
       page(@page).
       per(@per_page)
@@ -51,11 +51,6 @@ class ClockInOutsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_clock_in_out
       @clock_in_out = ClockInOut.find(params[:id])
-    end
-
-    def set_default_page
-      @page = params[:page] || 1
-      @per_page = params[:per_page] || 10
     end
 
     def set_user

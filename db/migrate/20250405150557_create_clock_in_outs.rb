@@ -1,7 +1,6 @@
 class CreateClockInOuts < ActiveRecord::Migration[7.0]
   def change
     create_table :clock_in_outs do |t|
-      t.date :target_date
       t.datetime :clock_in
       t.datetime :clock_out
       t.integer :duration
@@ -10,4 +9,7 @@ class CreateClockInOuts < ActiveRecord::Migration[7.0]
       t.timestamps
     end
   end
+
+  add_index(:clock_in_outs, :user_id)
+  add_index(:clock_in_outs, [:user_id, :clock_in])
 end

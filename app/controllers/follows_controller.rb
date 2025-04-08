@@ -1,9 +1,17 @@
 class FollowsController < ApplicationController
   before_action :set_follow, only: %i[ show edit update destroy ]
+  before_action :set_default_page, only: %i[ index ]
 
   # GET /follows or /follows.json
-  def index
-    @follows = Follow.where(followed_id: params[:user_id])
+  def followings
+    @follows = Follow.where(follower_id: params[:user_id]).page(@page).per(@page)
+    respond_to do |format|
+      format.json { render json: @follows }
+    end
+  end
+
+  def followers
+    @follows = Follow.where(followed_id: params[:user_id]).page(@page).per(@page)
     respond_to do |format|
       format.json { render json: @follows }
     end
